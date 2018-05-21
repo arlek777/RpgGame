@@ -10,41 +10,63 @@ namespace Test
 
         static void Main(string[] args)
         {
+            const int size = 3;
+
             int id = 0;
-            int[][] allNodes = new int[3][];
-            for (int i = 0; i < 3; i++)
+            int[][] allNodes = new int[size][];
+            for (int i = 0; i < size; i++)
             {
-                allNodes[i] = new int[3];
-                for (int j = 0; j < 3; j++)
+                allNodes[i] = new int[size];
+                for (int j = 0; j < size; j++)
                 {
                     allNodes[i][j] = ++id;
                 }
             }
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < size; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < size; j++)
                 {
                     var currId = allNodes[i][j];
                     graph[currId] = Neighbors(allNodes, i, j);
                 }
             }
 
-            var result = Search(3);
+            var result = GetPath(1, 9);
         }
 
-        static int Search(int id)
+        static List<int> GetPath(int startId, int targetId)
         {
-            var queue = new Queue<int>(graph[1]);
-            while (queue.Any())
+            var frontier = new Queue<int>();
+            frontier.Enqueue(startId);
+            var cameFrom = new Dictionary<int, int>();
+            int current;
+            while (frontier.Any())
             {
-                int node = queue.Dequeue();
-                if (node == id) return node;
+                current = frontier.Dequeue();
+                if (current == targetId)
+                    break;
 
-                queue = new Queue<int>(queue.ToArray().Concat(graph[node]));
+                foreach (var next in graph[current])
+                {
+                    if (!cameFrom.ContainsKey(next))
+                    {
+                        frontier.Enqueue(next);
+                        cameFrom[next] = current;
+                    }
+                }
             }
 
-            return -1;
+            current = targetId;
+            var path = new List<int>();
+            while (current != startId)
+            {
+                path.Add(current);
+                current = cameFrom[current];
+            }
+            path.Reverse();
+
+            return path;
         }
 
         static List<int> Neighbors(int[][] allNodes, int x, int y)
