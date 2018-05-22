@@ -10,7 +10,7 @@ namespace Test
 
         static void Main(string[] args)
         {
-            const int size = 3;
+            const int size = 5;
 
             int id = 0;
             int[][] allNodes = new int[size][];
@@ -32,7 +32,7 @@ namespace Test
                 }
             }
 
-            var result = GetPath(1, 9);
+            var result = GetPath(1, 13);
         }
 
         static List<int> GetPath(int startId, int targetId)

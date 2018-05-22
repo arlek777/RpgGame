@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,94 +10,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Xml.Linq;
+using RpgGame.UI.Core;
 
 namespace RpgGame.UI
 {
-    public class MapManager
-    {
-        private readonly Canvas _canvas;
-        private const string LevelMapFolder = "Assets/Map";
-        private const string SpriteFilePath = "Assets/Tiles/sprite.png";
-        private const string UriPackPrefix = "pack://application:,,,";
-
-        public MapManager(Canvas canvas)
-        {
-            _canvas = canvas;
-        }
-
-        public void DrawLevelMap(string levelName)
-        {
-            var levelFullPath = new Uri($"{UriPackPrefix}/{LevelMapFolder}/{levelName}.oel").AbsolutePath;
-            var document = XDocument.Load(File.OpenRead("../../" + levelFullPath));
-            if(document.Root == null) throw new NullReferenceException("Level is not found.");
-
-            var layers = new List<int[]>()
-            {
-                GetLayerByName(document.Root, UiConstants.BgLayerTitle),
-                GetLayerByName(document.Root, UiConstants.WallsLayerTitle)
-            };
-
-            layers.ForEach(DrawLayer);
-        }
-
-        private void DrawLayer(int[] layer)
-        {
-            var sprite = new BitmapImage(new Uri($"{UriPackPrefix}/{SpriteFilePath}", UriKind.Absolute));
-            int windowColsCount = (int)_canvas.Width / UiConstants.TileWidth;
-            int spriteColsCount = (int)sprite.Width / UiConstants.TileWidth;
-
-            for (int i = 0; i < layer.Length; i++)
-            {
-                var value = layer[i];
-                if (value != -1)
-                {
-                    var windowRow = (int)Math.Floor(i / (double)windowColsCount);
-                    var windowCol = i % windowColsCount;
-
-                    var spriteRow = (int)Math.Floor(value / (double)spriteColsCount);
-                    var spriteCol = value % spriteColsCount;
-
-                    var cropRect = new Int32Rect(spriteCol * UiConstants.TileWidth, spriteRow * UiConstants.TileWidth,
-                        UiConstants.TileWidth, UiConstants.TileWidth);
-                    var img = new Image
-                    {
-                        Source = new CroppedBitmap(sprite, cropRect)
-                    };
-
-                    _canvas.Children.Add(img);
-                    Canvas.SetLeft(img, UiConstants.TileWidth * windowCol);
-                    Canvas.SetTop(img, UiConstants.TileWidth * windowRow);
-                }
-            }
-        }
-
-        private int[] GetLayerByName(XElement element, string name)
-        {
-            int[] layer = element.Elements().FirstOrDefault(el => el.Name == name)?
-                .Value.Split(',', '\n')
-                .Select(int.Parse)
-                .ToArray();
-
-            return layer;
-        }
-    }
-
-    public static class UiConstants
-    {
-        public const int TileHeight = 32;
-        public const int TileWidth = 32;
-
-        public const string BgLayerTitle = "Bg";
-        public const string WallsLayerTitle = "Walls";
-    }
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MapManager _mapManager;
+        private MapLoader _mapLoader;
+        private MapDrawer _mapDrawer;
+        private GridGraph _graph;
 
         public MainWindow()
         {
@@ -109,10 +30,42 @@ namespace RpgGame.UI
 
         protected override void OnInitialized(EventArgs e)
         {
-            _mapManager = new MapManager(MainCanvas);
-            _mapManager.DrawLevelMap("TestLevel");
+            _mapLoader = new MapLoader();
+            _mapDrawer = new MapDrawer(MainCanvas, _mapLoader);
+            _mapDrawer.DrawLevelMap("TestLevel");
+
+            var player = new BitmapImage(new Uri($"{UiConstants.UriPackPrefix}/Assets/Tiles/player.png"));
+            var img = new Image() { Source = player };
+            MainCanvas.Children.Add(img);
+            Canvas.SetLeft(img, 256);
+            Canvas.SetTop(img, 256);
+
+            _graph = new GridGraph(_mapLoader.GetMapLayer(UiConstants.WallsLayerTitle), 32, -1);
 
             base.OnInitialized(e);
+        }
+
+        private void MainCanvas_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var left = (int) Canvas.GetLeft((UIElement) e.Source) / 32;
+            var top = (int) Canvas.GetTop((UIElement)e.Source);
+
+            var startIndex = 256 + 8;
+            var goalIndex = top + left;
+
+            var result = BFSPathFinder.GetPath(startIndex, goalIndex, _graph);
+
+            int windowTileCount = (int)MainCanvas.Width / UiConstants.TileWidth;
+
+            foreach (var i in result)
+            {
+                var point = CordinatesConverter.ConvertToWindow(i, windowTileCount);
+                var rect = new Rectangle() { Height = 32, Width = 32, Fill = new SolidColorBrush(Colors.Red) };
+                MainCanvas.Children.Add(rect);
+
+                Canvas.SetLeft(rect, (int) point.X);
+                Canvas.SetTop(rect, (int) point.Y);
+            }
         }
     }
 }
