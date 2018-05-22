@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -40,32 +41,38 @@ namespace RpgGame.UI
             Canvas.SetLeft(img, 256);
             Canvas.SetTop(img, 256);
 
-            _graph = new GridGraph(_mapLoader.GetMapLayer(UiConstants.WallsLayerTitle), 32, -1);
+            _graph = new GridGraph(_mapLoader.GetMapLayer(UiConstants.WallsLayerTitle), UiConstants.TileWidth);
 
             base.OnInitialized(e);
         }
 
+        private Canvas canvas = new Canvas() { Height = 680, Width = 1024 };
         private void MainCanvas_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var left = (int) Canvas.GetLeft((UIElement) e.Source) / 32;
+            canvas.Children.Clear();
+            MainCanvas.Children.Remove(canvas);
+
+            var left = (int) Canvas.GetLeft((UIElement) e.Source) / 32; //TODO clean
             var top = (int) Canvas.GetTop((UIElement)e.Source);
 
             var startIndex = 256 + 8;
             var goalIndex = top + left;
 
-            var result = BFSPathFinder.GetPath(startIndex, goalIndex, _graph);
+            var result = BfsPathFinder.GetPath(startIndex, goalIndex, -1, _graph);
 
             int windowTileCount = (int)MainCanvas.Width / UiConstants.TileWidth;
 
             foreach (var i in result)
             {
-                var point = CordinatesConverter.ConvertToWindow(i, windowTileCount);
-                var rect = new Rectangle() { Height = 32, Width = 32, Fill = new SolidColorBrush(Colors.Red) };
-                MainCanvas.Children.Add(rect);
+                var point = IndexConverter.ConvertToWindowPoint(i, windowTileCount);
+                Rectangle rect = new Rectangle() { Height = 32, Width = 32, Fill = new SolidColorBrush(Colors.Red) };
+                canvas.Children.Add(rect);
 
                 Canvas.SetLeft(rect, (int) point.X);
                 Canvas.SetTop(rect, (int) point.Y);
             }
+
+            MainCanvas.Children.Add(canvas);
         }
     }
 }
