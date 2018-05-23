@@ -56,6 +56,7 @@
     </ApplicationDefinition>
     <Compile Include="Core\BfsPathFinder.cs" />
     <Compile Include="Core\GridGraph.cs" />
+    <Compile Include="Core\LevelManager.cs" />
     <Compile Include="Core\UiConstants.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +107,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Tiles\player.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Tiles\boss.png" />
+    <Resource Include="Assets\Tiles\guard.png" />
+    <Resource Include="Assets\Tiles\monsters.png" />
+    <Resource Include="Assets\Tiles\potion.png" />
+    <Resource Include="Assets\Tiles\weapon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
