@@ -33,21 +33,21 @@ namespace RpgGame.Core
             switch (item)
             {
                 case Weapon w:
-                    if (_weapons.Count == Consntants.MAX_WEAPONS_OR_GUARDS)
+                    if (_weapons.Count == Consntants.MaxWeaponsOrGuards)
                     {
                         throw new ValidationException(Messages.MaxLimitWeaponsOrGuards);
                     }
                     _weapons.Add(w);
                     break;
                 case Potion p:
-                    if (_weapons.Count == Consntants.MAX_POTIONS)
+                    if (_weapons.Count == Consntants.MaxPotions)
                     {
                         throw new ValidationException(Messages.MaxLimitPotions);
                     }
                     _potions.Add(p);
                     break;
                 case Guard g:
-                    if (_weapons.Count == Consntants.MAX_WEAPONS_OR_GUARDS)
+                    if (_weapons.Count == Consntants.MaxWeaponsOrGuards)
                     {
                         throw new ValidationException(Messages.MaxLimitWeaponsOrGuards);
                     }

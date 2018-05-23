@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace RpgGame.UI
             var player = new BitmapImage(new Uri($"{UiConstants.UriPackPrefix}/Assets/Tiles/player.png"));
             var img = new Image() { Source = player };
             MainCanvas.Children.Add(img);
-            Canvas.SetLeft(img, 256);
+            Canvas.SetLeft(img, 128);
             Canvas.SetTop(img, 256);
 
             _graph = new GridGraph(_mapLoader.GetMapLayer(UiConstants.WallsLayerTitle), UiConstants.TileWidth);
@@ -46,16 +47,12 @@ namespace RpgGame.UI
             base.OnInitialized(e);
         }
 
-        private Canvas canvas = new Canvas() { Height = 680, Width = 1024 };
         private void MainCanvas_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            canvas.Children.Clear();
-            MainCanvas.Children.Remove(canvas);
-
             var left = (int) Canvas.GetLeft((UIElement) e.Source) / 32; //TODO clean
             var top = (int) Canvas.GetTop((UIElement)e.Source);
 
-            var startIndex = 256 + 8;
+            var startIndex = 256 + 4;
             var goalIndex = top + left;
 
             var result = BfsPathFinder.GetPath(startIndex, goalIndex, -1, _graph);
@@ -66,13 +63,11 @@ namespace RpgGame.UI
             {
                 var point = IndexConverter.ConvertToWindowPoint(i, windowTileCount);
                 Rectangle rect = new Rectangle() { Height = 32, Width = 32, Fill = new SolidColorBrush(Colors.Red) };
-                canvas.Children.Add(rect);
+                MainCanvas.Children.Add(rect);
 
                 Canvas.SetLeft(rect, (int) point.X);
                 Canvas.SetTop(rect, (int) point.Y);
             }
-
-            MainCanvas.Children.Add(canvas);
         }
     }
 }

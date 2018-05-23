@@ -28,32 +28,34 @@ namespace RpgGame.UI.Core
             var neighbors = new List<int>();
             foreach (var dir in _dirs)
             {
-                var neighborsIndex = index;
-                var columnIndex = neighborsIndex % _rowSize;
+                var neighborIndex = index;
+                var rowIndex = neighborIndex % _rowSize;
 
                 if (dir == Dirs.Bottom)
                 {
-                    neighborsIndex += _rowSize;
+                    neighborIndex += _rowSize;
                 }
                 else if (dir == Dirs.Top)
                 {
-                    neighborsIndex -= _rowSize;
+                    neighborIndex -= _rowSize;
                 }
-                else if (dir == Dirs.Right && columnIndex != _rowSize)
+                else if (dir == Dirs.Right && rowIndex != _rowSize)
                 {
-                    neighborsIndex += 1;
+                    neighborIndex += 1;
                 }
-                else if (dir == Dirs.Left && columnIndex != 0)
+                else if (dir == Dirs.Left && rowIndex != 0)
                 {
-                    neighborsIndex -= 1;
+                    neighborIndex -= 1;
                 }
 
-                neighborsIndex = neighborsIndex < 0 ? 0 : neighborsIndex;
+                neighborIndex = neighborIndex < 0 ? index : neighborIndex;
 
-                if (neighborsIndex >= Nodes.Length || neighborsIndex == index)
+                // if neighbor index is bigger then length (bottom) 
+                // or if it's the same index we don't want to add it
+                if (neighborIndex >= Nodes.Length || neighborIndex == index)
                     continue;
 
-                neighbors.Add(neighborsIndex);
+                neighbors.Add(neighborIndex);
             }
 
             return neighbors;
