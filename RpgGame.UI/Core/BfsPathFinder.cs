@@ -21,7 +21,7 @@ namespace RpgGame.UI.Core
                 if (current == goalIndex)
                     break;
 
-                foreach (var nextIndex in graph.GetNeighbors(current))
+                foreach (var nextIndex in graph.GetNeighborsIndexes(current))
                 {
                     if (!cameFrom.ContainsKey(nextIndex) && graph.Nodes[nextIndex] == groundId)
                     {

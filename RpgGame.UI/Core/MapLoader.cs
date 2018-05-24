@@ -11,7 +11,7 @@ namespace RpgGame.UI.Core
 
         public void Load(string levelName)
         {
-            var levelFullPath = new Uri($"{UiConstants.UriPackPrefix}/{UiConstants.LevelMapFolder}/{levelName}.oel").AbsolutePath;
+            var levelFullPath = new Uri($"{UiConstants.UriPackPrefix}/{UiConstants.MapLevelsFolder}/{levelName}.oel").AbsolutePath;
             var document = XDocument.Load(File.OpenRead("../../" + levelFullPath));
             if (document.Root == null) throw new NullReferenceException("Level is not found.");
 

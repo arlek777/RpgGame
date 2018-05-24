@@ -44,6 +44,9 @@ namespace RpgGame.UI
 
             _graph = new GridGraph(_mapLoader.GetMapLayer(UiConstants.WallsLayerTitle), UiConstants.TileWidth);
 
+            var monsters = LevelManager.FillMonsters(512, 32, _graph);
+            _mapDrawer.DrawLayer2(monsters);
+
             base.OnInitialized(e);
         }
 

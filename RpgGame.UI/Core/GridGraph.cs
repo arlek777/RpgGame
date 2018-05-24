@@ -23,7 +23,7 @@ namespace RpgGame.UI.Core
 
         public int[] Nodes { get; set; }
 
-        public List<int> GetNeighbors(int index)
+        public List<int> GetNeighborsIndexes(int index)
         {
             var neighbors = new List<int>();
             foreach (var dir in _dirs)
