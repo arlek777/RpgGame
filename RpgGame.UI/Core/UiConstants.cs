@@ -8,8 +8,8 @@ namespace RpgGame.UI.Core
         public const string BgLayerTitle = "Bg";
         public const string WallsLayerTitle = "Walls";
 
-        public const string LevelMapFolder = "Assets/Map";
-        public const string SpriteFilePath = "Assets/Tiles/sprite.png";
+        public const string MapLevelsFolder = "Assets/Map";
+        public const string TilesFolder = "Assets/Tiles";
         public const string UriPackPrefix = "pack://application:,,,";
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace RpgGame.Core
+namespace RpgGame.UI.Models
 {
     public class Inventory
     {
@@ -11,6 +11,17 @@ namespace RpgGame.Core
 
         public Inventory()
         {
+            Weapons = new ReadOnlyCollection<Weapon>(_weapons);
+            Guards = new ReadOnlyCollection<Guard>(_guards);
+            Potions = new ReadOnlyCollection<Potion>(_potions);
+        }
+
+        public Inventory(List<Weapon> weapons, List<Guard> guards, List<Potion> potions)
+        {
+            _weapons = weapons;
+            _guards = guards;
+            _potions = potions;
+
             Weapons = new ReadOnlyCollection<Weapon>(_weapons);
             Guards = new ReadOnlyCollection<Guard>(_guards);
             Potions = new ReadOnlyCollection<Potion>(_potions);

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RpgGame.Core
+namespace RpgGame.UI.Models
 {
     public class Level
     {

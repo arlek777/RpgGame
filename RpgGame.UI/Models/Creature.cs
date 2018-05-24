@@ -1,7 +1,8 @@
-﻿namespace RpgGame.Core
+﻿namespace RpgGame.UI.Models
 {
     public class Creature
     {
+        public int TileId { get; set; }
         public int LocationIndex { get; set; }
         public string Name { get; set; }
         public double Health { get; set; }

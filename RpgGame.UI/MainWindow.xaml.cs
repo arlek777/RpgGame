@@ -36,11 +36,11 @@ namespace RpgGame.UI
             _mapDrawer = new MapDrawer(MainCanvas, _mapLoader);
             _mapDrawer.DrawLevelMap("TestLevel");
 
-            var player = new BitmapImage(new Uri($"{UiConstants.UriPackPrefix}/Assets/Tiles/player.png"));
-            var img = new Image() { Source = player };
-            MainCanvas.Children.Add(img);
-            Canvas.SetLeft(img, 128);
-            Canvas.SetTop(img, 256);
+            //var player = new BitmapImage(new Uri($"{UiConstants.UriPackPrefix}/Assets/Tiles/player.png"));
+            //var img = new Image() { Source = player };
+            //MainCanvas.Children.Add(img);
+            //Canvas.SetLeft(img, 128);
+            //Canvas.SetTop(img, 256);
 
             _graph = new GridGraph(_mapLoader.GetMapLayer(UiConstants.WallsLayerTitle), UiConstants.TileWidth);
 
