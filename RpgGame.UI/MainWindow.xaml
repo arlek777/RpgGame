@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RpgGame.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="680" Width="1024">
+        Title="MainWindow" Height="700" Width="1050">
     <Canvas Name="MainCanvas" Height="680" Width="1024" MouseLeftButtonDown="MainCanvas_OnMouseLeftButtonDown">
     </Canvas>
 </Window>

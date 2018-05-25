@@ -126,8 +126,8 @@
     <Resource Include="Assets\Tiles\potion.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Tiles\gurad.png" />
     <Resource Include="Assets\Tiles\monsters.png" />
+    <Resource Include="Assets\Tiles\gurad.png" />
     <Resource Include="Assets\Tiles\weapon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

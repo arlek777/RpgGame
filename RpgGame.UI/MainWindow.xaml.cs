@@ -35,17 +35,31 @@ namespace RpgGame.UI
             _mapLoader = new MapLoader();
             _mapDrawer = new MapDrawer(MainCanvas, _mapLoader);
             _mapDrawer.DrawLevelMap("TestLevel");
-
-            //var player = new BitmapImage(new Uri($"{UiConstants.UriPackPrefix}/Assets/Tiles/player.png"));
-            //var img = new Image() { Source = player };
-            //MainCanvas.Children.Add(img);
-            //Canvas.SetLeft(img, 128);
-            //Canvas.SetTop(img, 256);
-
             _graph = new GridGraph(_mapLoader.GetMapLayer(UiConstants.WallsLayerTitle), UiConstants.TileWidth);
 
             var monsters = LevelManager.FillMonsters(512, 32, _graph);
             _mapDrawer.DrawLayer2(monsters);
+
+            //var uri = new Uri($"{UiConstants.UriPackPrefix}/{UiConstants.TilesFolder}/monsters.png", UriKind.Absolute);
+            //var sprite = new BitmapImage(uri);
+
+            //int windowTileCount = (int)MainCanvas.Width / UiConstants.TileWidth;
+            //int spriteTileCount = (int)sprite.Width / UiConstants.TileWidth;
+
+            //var windowPoint = IndexConverter.ConvertToWindowPoint(120, windowTileCount);
+            //var spritePoint = IndexConverter.ConvertToWindowPoint(2, spriteTileCount);
+
+            //var cropRect = new Int32Rect((int) spritePoint.X, (int) spritePoint.Y,
+            //    UiConstants.TileWidth, UiConstants.TileWidth);
+            //var img = new Image
+            //{
+            //    Source = new CroppedBitmap(sprite, cropRect)
+            //};
+
+            ////Rectangle rect = new Rectangle() { Height = 32, Width = 32, Fill = new SolidColorBrush(Colors.Red) };
+            //MainCanvas.Children.Add(img);
+            //Canvas.SetLeft(img, windowPoint.X);
+            //Canvas.SetTop(img, windowPoint.Y);
 
             base.OnInitialized(e);
         }

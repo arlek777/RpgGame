@@ -13,12 +13,12 @@ namespace RpgGame.UI.Core
         }
 
         private readonly Dirs[] _dirs = new[] { Dirs.Bottom, Dirs.Left, Dirs.Right, Dirs.Top };
-        private readonly int _rowSize;
+        public int RowSize { private set; get; }
 
         public GridGraph(int[] nodes, int rowSize)
         {
             Nodes = nodes;
-            _rowSize = rowSize;
+            RowSize = rowSize;
         }
 
         public int[] Nodes { get; set; }
@@ -29,17 +29,17 @@ namespace RpgGame.UI.Core
             foreach (var dir in _dirs)
             {
                 var neighborIndex = index;
-                var rowIndex = neighborIndex % _rowSize;
+                var rowIndex = neighborIndex % RowSize;
 
                 if (dir == Dirs.Bottom)
                 {
-                    neighborIndex += _rowSize;
+                    neighborIndex += RowSize;
                 }
                 else if (dir == Dirs.Top)
                 {
-                    neighborIndex -= _rowSize;
+                    neighborIndex -= RowSize;
                 }
-                else if (dir == Dirs.Right && rowIndex != _rowSize)
+                else if (dir == Dirs.Right && rowIndex != RowSize)
                 {
                     neighborIndex += 1;
                 }

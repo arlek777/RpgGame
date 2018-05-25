@@ -42,21 +42,20 @@ namespace RpgGame.UI.Core
             for (int i = 0; i < layer.Count; i++)
             {
                 var value = layer[i].TileId;
-               
-                var windowPoint = IndexConverter.ConvertToWindowPoint(layer[i].LocationIndex, windowTileCount);
-                //var spritePoint = IndexConverter.ConvertToWindowPoint(value, spriteTileCount);
 
-                //var cropRect = new Int32Rect(32, 0,
-                //    UiConstants.TileWidth, 12);
-                //var img = new Image
-                //{
-                //    Source = new CroppedBitmap(sprite, cropRect)
-                //};
+                Point windowPoint = IndexConverter.ConvertToWindowPoint(layer[i].LocationIndex, windowTileCount);
+                Point spritePoint = IndexConverter.ConvertToWindowPoint(value, spriteTileCount);
 
-                Rectangle rect = new Rectangle() { Height = 32, Width = 32, Fill = new SolidColorBrush(Colors.Red) };
-                _canvas.Children.Add(rect);
-                Canvas.SetLeft(rect, windowPoint.X);
-                Canvas.SetTop(rect, windowPoint.Y);
+                var cropRect = new Int32Rect((int) spritePoint.X, (int) spritePoint.Y,
+                    UiConstants.TileWidth, UiConstants.TileWidth);
+                var img = new Image
+                {
+                    Source = new CroppedBitmap(sprite, cropRect)
+                };
+
+                _canvas.Children.Add(img);
+                Canvas.SetLeft(img, windowPoint.X);
+                Canvas.SetTop(img, windowPoint.Y);
             }
         }
 

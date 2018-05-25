@@ -22,15 +22,16 @@ namespace RpgGame.UI.Core
         {
             var random = new Random();
             var tileCount = spriteSize / tileSize;
-            var monstersCount = random.Next(3, 5);
+            var monstersCount = random.Next(5, 8);
             var monsters = new List<Monster>();
             for (int i = 0; i < monstersCount; i++)
             {
                 var li = GetLocationIndex(graph);
+                var tileId = random.Next(0, tileCount);
                 monsters.Add(new Monster()
                 {
                     Name = "Monster",
-                    TileId = new Random().Next(0, tileCount) * tileSize,
+                    TileId = tileId,
                     Health = 10,
                     Strength = 5,
                     LocationIndex = li
@@ -40,13 +41,14 @@ namespace RpgGame.UI.Core
             return monsters;
         }
 
+        private static List<int> usedIndexes = new List<int>();
         private static int GetLocationIndex(GridGraph graph)
         {
             var random = new Random();
             int locationIndex;
             while (true)
             {
-                locationIndex = random.Next(0, graph.Nodes.Length - 1);
+                locationIndex = random.Next(4, graph.Nodes.Length - 5);
                 var neighborsIndexes = graph.GetNeighborsIndexes(locationIndex);
                 var can = true;
                 foreach (var neighborsIndex in neighborsIndexes)
@@ -59,7 +61,12 @@ namespace RpgGame.UI.Core
                 }
 
                 var value = graph.Nodes[locationIndex];
-                if (can || value == -1) break;
+                var rowIndex = locationIndex % graph.RowSize;
+                if ((can || value == -1) && !usedIndexes.Contains(locationIndex) && rowIndex > 3 && rowIndex < graph.RowSize)
+                {
+                    usedIndexes.Add(locationIndex);
+                    break;
+                }
             }
 
             return locationIndex;
